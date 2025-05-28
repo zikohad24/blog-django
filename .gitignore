@@ -1,0 +1,32 @@
+# Entorn virtual
+venv/
+.env/
+
+# Fitxers compilats de Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Fitxers de la base de dades
+*.sqlite3
+
+# Configuració local
+*.env
+*.log
+db.sqlite3
+
+# Fitxers de migració
+**/migrations/*.py
+**/migrations/*.pyc
+!**/migrations/__init__.py
+
+# Fitxers de media i estàtics generats
+/media/
+staticfiles/
+
+# Fitxers de JetBrains / PyCharm
+.idea/
+
+# Fitxers del sistema
+.DS_Store
+Thumbs.db
