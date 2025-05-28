@@ -1,0 +1,39 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% block title %}Detalls de l'Autor{% endblock %}
+
+{% block content %}
+  <h2>Detalls de l'Autor</h2>
+
+  <p><strong>Nom:</strong> {{ author.first_name }}</p>
+  <p><strong>Cognom:</strong> {{ author.last_name }}</p>
+  <p><strong>Adreça:</strong> {{ author.email }}</p>
+
+  <hr>
+  <h4>Posts publicats per {{ author.first_name }} {{ author.last_name }}</h4>
+
+  {% if posts %}
+    <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
+      {% for post in posts %}
+        <div class="col">
+          <div class="card h-100 shadow-sm">
+            {% if post.image_name %}
+              <img src="{% static 'blog/img/' %}{{ post.image_name }}" class="card-img-top" alt="{{ post.title }}">
+            {% endif %}
+            <div class="card-body">
+              <h5 class="card-title">{{ post.title }}</h5>
+              <p class="card-text">{{ post.excerpt }}</p>
+            </div>
+            <div class="card-footer text-end bg-white border-top-0">
+              <a href="{% url 'post_detail' post.slug %}" class="btn btn-outline-primary btn-sm">Llegir més</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>No ha escrit cap post.</p>
+  {% endif %}
+
+  <a href="{% url 'author_list' %}" class="btn btn-secondary mt-4">Tornar</a>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+{% block title %}Tots els Posts{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Llistat de tots els posts</h1>
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+    {% for post in posts %}
+        <div class="col">
+            <div class="card h-100">
+                <img src="{% static 'blog/img/' %}{{ post.image_name }}" class="card-img-top" alt="{{ post.title }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ post.title }}</h5>
+                    <p class="card-text">{{ post.excerpt|truncatewords:15 }}</p>
+                    <a href="{% url 'post_detail' slug=post.slug %}" class="btn btn-primary">Llegeix més</a>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <p>No hi ha cap post disponible.</p>
+    {% endfor %}
+</div>
+{% endblock %}

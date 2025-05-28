@@ -1,0 +1,32 @@
+{% extends "blog/base.html" %}
+
+{% block title %}Tags{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Llistat de tags</h2>
+
+    {% if tags %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nom del tag</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for tag in tags %}
+            <tr>
+                <td>{{ tag.name }}</td>
+                <td>
+                    <a href="{% url 'tag-posts' tag.name %}" class="btn btn-primary btn-sm">saber-ne +</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p>No hi ha tags.</p>
+    {% endif %}
+</div>
+{% endblock %}

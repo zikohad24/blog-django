@@ -1,0 +1,28 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block title %}Inici{% endblock %}
+
+{% block content %}
+  <div class="text-center mb-4">
+    <h1>Benvingut My site</h1>
+    <p>Aquest és el projecte d’aprenentatge M3-UF6 basat en Django</p>
+  </div>
+
+  <h2>Darrers 3 posts</h2>
+  <ul class="list-unstyled">
+    {% for post in posts %}
+      <li class="mb-4 border-bottom pb-3">
+        <h4>
+          <a href="{% url 'post_detail' post.slug %}" class="text-primary">
+            {{ post.title }}
+          </a>
+        </h4>
+        <p>{{ post.excerpt }}</p>
+        <img src="{% static 'blog/img/' %}{{ post.image_name }}" alt="{{ post.title }}" width="300" class="img-fluid mb-2">
+        <p><strong>Autor:</strong> {{ post.author }}</p>
+        <a href="{% url 'post_detail' post.slug %}" class="btn btn-sm btn-outline-primary">Llegeix més</a>
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}
