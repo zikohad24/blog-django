@@ -9,6 +9,9 @@ jobs:
   build-docs:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write  # 🔒 Important per permetre fer push
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -45,4 +48,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs
-
+          publish_branch: gh-pages  # 📦 Nom de la branca de publicació
