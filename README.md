@@ -34,55 +34,35 @@ my_site/
 ├── db.sqlite3
 └── manage.py
 
-
 ---
+
 
 ## 🚀 Execució local
 
-1. **Crea i activa un entorn virtual:**
+1. Crea i activa un entorn virtual:
+    ```bash
+    python -m venv venv
+    source venv/bin/activate  # o venv\Scripts\activate a Windows
+    ```
 
-```bash
-python -m venv venv
-source venv/bin/activate  # o venv\Scripts\activate a Windows
-Instal·la les dependències:
+2. Instal·la les dependències:
+    ```bash
+    pip install -r requirements.txt
+    ```
 
-bash
-Copier
-Modifier
-pip install -r requirements.txt
-Aplica les migracions i carrega dades:
+3. Aplica les migracions i carrega les dades:
+    ```bash
+    python manage.py migrate
+    python manage.py loaddata initial_data.json
+    ```
 
-bash
-Copier
-Modifier
-python manage.py migrate
-python manage.py loaddata initial_data.json
-Executa el servidor:
-
-bash
-Copier
-Modifier
-python manage.py runserver
-🔗 Crèdits
-Projecte creat com a part de l’assignatura M3 - UF6 de cicles formatius.
-
-yaml
-Copier
-Modifier
+4. Executa el servidor:
+    ```bash
+    python manage.py runserver
+    ```
 
 ---
 
-### 🔧 Vols que t’ajudi ara a:
+### 🔗 Crèdits
 
-- Crear el fitxer `requirements.txt`?
-- Pujar-lo a GitHub?
-- Afegir una demo visual (captura de pantalla al README)?
-
-Només digues "sí" i t’ho preparo tot.
-
-
-
-
-
-
-
+Projecte creat com a part de l'assignatura **M3 - UF6** de cicles formatius.
