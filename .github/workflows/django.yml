@@ -25,8 +25,14 @@ jobs:
       - name: Migrate DB
         run: python manage.py migrate
 
-      - name: Load fixtures
-        run: python manage.py loaddata blog/fixtures/initial_data.json
+      - name: Crear dades temporals de prova
+        run: |
+          echo "from blog.models import Author, Tag, Post" > init_test_data.py
+          echo "from django.utils import timezone" >> init_test_data.py
+          echo "a = Author.objects.create(first_name='Test', last_name='User', email='test@example.com')" >> init_test_data.py
+          echo "t = Tag.objects.create(name='test')" >> init_test_data.py
+          echo "Post.objects.create(title='Títol test', excerpt='Resum', content='Contingut', image_name='img.png', date='2024-05-24', author=a)" >> init_test_data.py
+          python manage.py shell < init_test_data.py
 
       - name: Run tests
         run: python manage.py test
