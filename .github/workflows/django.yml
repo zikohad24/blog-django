@@ -1,28 +1,10 @@
-name: Django Tests
+name: Django CI
 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+on: [push]
 
 jobs:
   test:
     runs-on: ubuntu-latest
-
-    services:
-      postgres:
-        image: postgres:13
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: test_db
-        ports: [5432:5432]
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
 
     steps:
     - uses: actions/checkout@v3
@@ -34,17 +16,21 @@ jobs:
 
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
+        python -m venv venv
+        source venv/bin/activate
         pip install -r requirements.txt
 
     - name: Run migrations
       run: |
+        source venv/bin/activate
         python manage.py migrate
 
-    - name: Load fixtures
+    - name: Load partial fixture (sense posts)
       run: |
-        python manage.py loaddata blog/fixtures/initial_data.json
+        source venv/bin/activate
+        python manage.py loaddata blog/fixtures/initial_data.json --exclude=blog.Post
 
     - name: Run tests
       run: |
+        source venv/bin/activate
         python manage.py test
