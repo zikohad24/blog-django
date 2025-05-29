@@ -1,4 +1,4 @@
-name: Build and Deploy Pydoc
+name: Build Pydoc Docs
 
 on:
   push:
@@ -27,14 +27,18 @@ jobs:
         run: mkdir -p docs
 
       - name: Generate docs with Pydoc
-        run: python -m pydoc -w blog.models
+        run: |
+          export DJANGO_SETTINGS_MODULE=my_site.settings
+          python -m pydoc -w blog.models
+          python -m pydoc -w blog.urls
 
       - name: Move docs to folder
-        run: mv blog.models.html docs/
+        run: |
+          mv blog.models.html docs/
+          mv blog.urls.html docs/
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs
-          publish_branch: gh-pages
