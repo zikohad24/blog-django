@@ -26,12 +26,9 @@ jobs:
     - name: Create docs folder
       run: mkdir -p docs
 
-    - name: Export Django settings
+    - name: Generate docs with Django setup
       run: |
-        export DJANGO_SETTINGS_MODULE=my_site.settings
-        python manage.py check
-        python -m pydoc -w blog.models
-        python -m pydoc -w blog.urls
+        python generate_docs.py
         mv blog.models.html docs/
         mv blog.urls.html docs/
 
