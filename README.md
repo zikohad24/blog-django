@@ -69,9 +69,10 @@ python manage.py runserver
 
 ## 📚 Documentació amb Pydoc
 
-➡️ [Veure documentació Pydoc generada](https://zikohad24.github.io/blog-django/blog.models.html)
+🔗 [Veure documentació de `models.py`](https://zikohad24.github.io/blog-django/blog.models.html)
 
----
+🔗 [Veure documentació de `urls.py`](https://zikohad24.github.io/blog-django/blog.urls.html)
+
 
 ## 🔗 Crèdits
 
