@@ -1,4 +1,4 @@
-name: build-docs
+name: Build and Deploy Pydoc
 
 on:
   push:
@@ -8,9 +8,6 @@ on:
 jobs:
   build-docs:
     runs-on: ubuntu-latest
-
-    permissions:
-      contents: write  # 🔒 Important per permetre fer push
 
     steps:
       - name: Checkout repo
@@ -24,28 +21,20 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install Django
+          pip install -r requirements.txt
 
       - name: Create docs folder
         run: mkdir -p docs
 
       - name: Generate docs with Pydoc
-        env:
-          DJANGO_SETTINGS_MODULE: my_site.settings
-        run: |
-          python manage.py shell -c "import pydoc; import blog.models; pydoc.writedoc(blog.models)"
-          python manage.py shell -c "import pydoc; import blog.views; pydoc.writedoc(blog.views)"
-          python manage.py shell -c "import pydoc; import blog.urls; pydoc.writedoc(blog.urls)"
+        run: python -m pydoc -w blog.models
 
       - name: Move docs to folder
-        run: |
-          mv blog.models.html docs/
-          mv blog.views.html docs/
-          mv blog.urls.html docs/
+        run: mv blog.models.html docs/
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs
-          publish_branch: gh-pages  # 📦 Nom de la branca de publicació
+          publish_branch: gh-pages
