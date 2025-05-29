@@ -1,0 +1,36 @@
+name: Generar Pydoc
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install project (si tens setup.py, si no es pot ignorar)
+      run: |
+        pip install -r requirements.txt || true
+
+    - name: Create HTML docs with Pydoc
+      run: |
+        mkdir -p docs
+        python -m pydoc -w blog.models
+        python -m pydoc -w blog.views
+        python -m pydoc -w blog.urls
+        mv *.html docs/
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./docs
