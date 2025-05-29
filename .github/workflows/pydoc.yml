@@ -1,4 +1,4 @@
-name: Build Pydoc Docs
+name: build-docs
 
 on:
   push:
@@ -6,39 +6,37 @@ on:
       - main
 
 jobs:
-  build-docs:
+  generate-docs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
+    - name: Checkout repo
+      uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
 
-      - name: Create docs folder
-        run: mkdir -p docs
+    - name: Create docs folder
+      run: mkdir -p docs
 
-      - name: Generate docs with Pydoc
-        run: |
-          export DJANGO_SETTINGS_MODULE=my_site.settings
-          python -m pydoc -w blog.models
-          python -m pydoc -w blog.urls
+    - name: Export Django settings
+      run: |
+        export DJANGO_SETTINGS_MODULE=my_site.settings
+        python manage.py check
+        python -m pydoc -w blog.models
+        python -m pydoc -w blog.urls
+        mv blog.models.html docs/
+        mv blog.urls.html docs/
 
-      - name: Move docs to folder
-        run: |
-          mv blog.models.html docs/
-          mv blog.urls.html docs/
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./docs
