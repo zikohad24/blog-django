@@ -1,36 +1,32 @@
 name: Django CI
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   test:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
 
-    - name: Install dependencies
-      run: |
-        python -m venv venv
-        source venv/bin/activate
-        pip install -r requirements.txt
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-    - name: Run migrations
-      run: |
-        source venv/bin/activate
-        python manage.py migrate
+      - name: Make migrations
+        run: python manage.py makemigrations --check --dry-run
 
-    - name: Load partial fixture (sense posts)
-      run: |
-        source venv/bin/activate
-        python manage.py loaddata blog/fixtures/initial_data.json --exclude=blog.Post
+      - name: Migrate DB
+        run: python manage.py migrate
 
-    - name: Run tests
-      run: |
-        source venv/bin/activate
-        python manage.py test
+      - name: Load fixtures
+        run: python manage.py loaddata blog/fixtures/initial_data.json
+
+      - name: Run tests
+        run: python manage.py test
